@@ -1,0 +1,354 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+
+const launchYear = new Date().getFullYear();
+---
+
+<Layout
+  title="Art Talks — Coming Soon"
+  description="Art Talks is coming soon. A new space for conversations about art, culture, and creativity."
+>
+  <main class="hero">
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <span class="mark">ART TALKS</span>
+      <span class="year">{launchYear}</span>
+    </header>
+
+    <section class="content">
+      <div class="logo-wrap">
+        <Image
+          src={logo}
+          alt="Art Talks"
+          width={320}
+          height={324}
+          loading="eager"
+          class="logo"
+        />
+      </div>
+
+      <p class="eyebrow">Coming Soon</p>
+      <h1 class="title">
+        Conversations<br />
+        <em>about art</em>
+      </h1>
+      <p class="tagline">
+        A new space for artists, curators, and the curious — where ideas,
+        culture, and creativity find their voice.
+      </p>
+
+      <form class="signup" id="signup" novalidate>
+        <label class="visually-hidden" for="email">Email address</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@domain.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit">
+          <span>Notify Me</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 8h13m0 0L8 2m6 6l-6 6"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </form>
+      <p class="note" id="note" aria-live="polite"></p>
+    </section>
+
+    <footer class="bottombar">
+      <span>© {launchYear} Art Talks</span>
+      <span class="divider">·</span>
+      <a href="mailto:hello@arttalks.co">hello@arttalks.co</a>
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById('signup') as HTMLFormElement | null;
+    const note = document.getElementById('note');
+    if (form && note) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input[type="email"]') as HTMLInputElement | null;
+        if (!input) return;
+        const value = input.value.trim();
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        if (!ok) {
+          note.textContent = 'Please enter a valid email.';
+          note.style.color = '#ff7a7a';
+          return;
+        }
+        note.textContent = 'Thanks — we\'ll be in touch soon.';
+        note.style.color = 'var(--accent)';
+        input.value = '';
+      });
+    }
+  </script>
+
+  <style>
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: clamp(1.25rem, 3vw, 2.25rem);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(
+          1200px 600px at 15% 10%,
+          rgba(217, 164, 65, 0.18),
+          transparent 60%
+        ),
+        radial-gradient(
+          900px 700px at 85% 90%,
+          rgba(217, 164, 65, 0.08),
+          transparent 60%
+        ),
+        linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    .topbar,
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .topbar .mark {
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .bottombar {
+      justify-content: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      padding-top: 2rem;
+    }
+
+    .bottombar a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .bottombar a:hover {
+      color: var(--accent);
+    }
+
+    .bottombar .divider {
+      opacity: 0.4;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(2rem, 6vh, 4rem) 0;
+      width: 100%;
+    }
+
+    .logo-wrap {
+      animation: fadeInUp 1s ease 0.05s both;
+      margin-bottom: clamp(1.25rem, 3vh, 2rem);
+    }
+
+    .logo {
+      width: clamp(140px, 22vw, 220px);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.5));
+    }
+
+    .eyebrow {
+      margin: 0 0 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      animation: fadeInUp 1s ease 0.15s both;
+    }
+
+    .title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2.75rem, 9vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.25rem;
+      animation: fadeInUp 1s ease 0.25s both;
+    }
+
+    .title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+
+    .tagline {
+      max-width: 32rem;
+      margin: 0 auto 2rem;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.125rem);
+      line-height: 1.6;
+      animation: fadeInUp 1s ease 0.35s both;
+    }
+
+    .signup {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 28rem;
+      padding: 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: fadeInUp 1s ease 0.45s both;
+      transition: border-color 0.2s ease;
+    }
+
+    .signup:focus-within {
+      border-color: var(--accent);
+    }
+
+    .signup input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font: inherit;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    .signup input::placeholder {
+      color: rgba(245, 241, 234, 0.4);
+    }
+
+    .signup button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      border: none;
+      border-radius: 999px;
+      background: var(--fg);
+      color: var(--bg);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .signup button:hover {
+      background: var(--accent);
+      transform: translateX(2px);
+    }
+
+    .signup button:active {
+      transform: translateX(0);
+    }
+
+    .note {
+      min-height: 1.25rem;
+      margin: 0.9rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      animation: fadeInUp 1s ease 0.55s both;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .signup {
+        flex-direction: column;
+        border-radius: 1.25rem;
+        padding: 0.5rem;
+      }
+      .signup button {
+        justify-content: center;
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</Layout>

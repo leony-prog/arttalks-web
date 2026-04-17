@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
+import heroBg from '../assets/hero-bg.png';
 
 const launchYear = new Date().getFullYear();
 ---
@@ -11,7 +12,17 @@ const launchYear = new Date().getFullYear();
   description="Art Talks is coming soon. A new space for conversations about art, culture, and creativity."
 >
   <main class="hero">
-    <div class="backdrop" aria-hidden="true"></div>
+    <div class="backdrop" aria-hidden="true">
+      <Image
+        src={heroBg}
+        alt=""
+        width={1504}
+        height={1210}
+        loading="eager"
+        class="backdrop-img"
+      />
+      <div class="backdrop-overlay"></div>
+    </div>
     <div class="grain" aria-hidden="true"></div>
 
     <header class="topbar">
@@ -117,18 +128,34 @@ const launchYear = new Date().getFullYear();
       position: absolute;
       inset: 0;
       z-index: -2;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .backdrop-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .backdrop-overlay {
+      position: absolute;
+      inset: 0;
       background:
         radial-gradient(
-          1200px 600px at 15% 10%,
-          rgba(217, 164, 65, 0.18),
-          transparent 60%
+          1200px 700px at 50% 45%,
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.55) 75%
         ),
-        radial-gradient(
-          900px 700px at 85% 90%,
-          rgba(217, 164, 65, 0.08),
-          transparent 60%
-        ),
-        linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
+        linear-gradient(
+          180deg,
+          rgba(10, 10, 10, 0.55) 0%,
+          rgba(10, 10, 10, 0.35) 40%,
+          rgba(10, 10, 10, 0.75) 100%
+        );
     }
 
     .grain {
